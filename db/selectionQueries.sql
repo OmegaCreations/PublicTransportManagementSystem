@@ -24,6 +24,11 @@ SELECT p.name AS przystanek, go.godzina_odjazdu
         JOIN mpk.przystanek p USING (przystanek_id)
     WHERE l.linia_nr = '501' AND l.kierunek = 'Miechowity';
 
-
+-- znalezienie przystanków dla danej linii
+SELECT l.linia_nr, p.name, l.kierunek AS przystanek
+    FROM mpk.przystanek p
+        JOIN mpk.linia_przystanek lp USING (przystanek_id)
+        JOIN mpk.linia l USING (linia_id)
+    WHERE l.linia_nr = '501';
 
 --------------------------------------------------------------------
