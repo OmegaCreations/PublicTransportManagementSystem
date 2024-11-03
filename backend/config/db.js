@@ -17,14 +17,14 @@ const dbQuerySelect = async (query) => {
 // gets all buses
 const getAllLines = async () => {
   return await dbQuerySelect(
-    "SELECT linia.linia_nr, linia.kierunek FROM linia;"
+    "SELECT linia.linia_nr as line_number, linia.kierunek as direction FROM linia;"
   );
 };
 
 // get all line stops
 const getLineStops = async (line_number) => {
   return await dbQuerySelect(`
-      SELECT l.linia_nr, p.name, l.kierunek AS przystanek
+      SELECT l.linia_nr as line_number, l.kierunek AS direction, lp.numer_kolejnosci as order_number, p.name as stop_name
         FROM przystanek p
             JOIN linia_przystanek lp USING (przystanek_id)
             JOIN linia l USING (linia_id)

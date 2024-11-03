@@ -1,6 +1,8 @@
 const express = require("express");
-const { getLineStops, getAllLines } = require("./config/db");
+const jwt = require("jsonwebtoken");
+const { getLineStops, getAllLines, addNewLine } = require("./config/db");
 
+// -------------------------
 // public routes
 const public_routes = express.Router();
 
@@ -31,8 +33,55 @@ public_routes.get("/bus/:line_number", async (req, res) => {
   }
 });
 
+// -------------------------
 // admin routes
 const admin_routes = express.Router();
+
+// user sessions statically for demonstrating purposes.
+// in full project you could create second db with admin users.
+// no need for signing up new users through forms in this project.
+let users = [
+  {
+    username: "Admin",
+    password: "Admin",
+  },
+];
+
+// returns true if user is in users array
+const authenticatedUser = (username, password) => {
+  let validUsers = users.filter((user) => {
+    return user.username === username && user.password === password;
+  });
+
+  return validUsers.length > 0;
+};
+
+//only "registered" users can log in
+admin_routes.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if (!username || !password) {
+    return res.status(404).json({ message: "Error logging in" });
+  }
+
+  if (authenticatedUser(username, password)) {
+    let accessToken = jwt.sign(
+      {
+        data: password,
+      },
+      "access", // <-very strong secret key
+      { expiresIn: 60 * 60 }
+    );
+
+    req.session.authorization = { accessToken };
+    req.session.username = username;
+
+    return res.status(200).send("User successfully logged in.");
+  } else {
+    return res.status(208).json({ message: "Wrong username and password" });
+  }
+});
 
 module.exports.public_routes = public_routes;
 module.exports.admin_routes = admin_routes;
