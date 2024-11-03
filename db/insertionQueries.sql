@@ -103,3 +103,6 @@ INSERT INTO mpk.godzina_odjazdu (linia_przystanek_id, godzina_odjazdu) VALUES
     ((SELECT linia_przystanek_id FROM mpk.linia_przystanek WHERE linia_id = 
         (SELECT linia_id FROM mpk.linia WHERE kierunek = 'Chelmonskiego Petla' AND linia_nr = 501) AND przystanek_id = (SELECT przystanek_id FROM mpk.przystanek WHERE name = 'Chelmonskiego Petla')), '08:40:00');
 
+-- Adding new Bus Stop but if it already exists db ignores query.
+INSERT IGNORE INTO przystanek(name) VALUES
+          ('New stop'); 

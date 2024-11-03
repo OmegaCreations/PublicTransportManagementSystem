@@ -83,5 +83,19 @@ admin_routes.post("/login", (req, res) => {
   }
 });
 
+// adds new bus line
+admin_routes.post("/bus/add", async (req, res) => {
+  const line_number = req.body.line_number;
+  const stops = req.body.stops;
+  const direction = stops[stops.length - 1].name;
+
+  if (line_number && stops && direction) {
+    const result = await addNewLine(line_number, direction, stops);
+    res.json(result);
+  } else {
+    return res.status(404).json({ message: "Error adding new Bus Line." });
+  }
+});
+
 module.exports.public_routes = public_routes;
 module.exports.admin_routes = admin_routes;
