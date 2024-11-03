@@ -16,7 +16,7 @@ app.use(
 );
 
 // middleware blocks routes for admin management
-app.use("/admin/auth/*", function auth(req, res, next) {
+app.use("/admin/bus/s/s/s/*", function auth(req, res, next) {
   if (req.session.authorization) {
     token = req.session.authorization["accessToken"];
 

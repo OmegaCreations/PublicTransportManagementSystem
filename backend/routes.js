@@ -1,6 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { getLineStops, getAllLines, addNewLine } = require("./config/db");
+const {
+  getLineStops,
+  getAllLines,
+  addNewLine,
+  addNewStop,
+} = require("./config/db");
 
 // -------------------------
 // public routes
@@ -26,7 +31,7 @@ public_routes.get("/bus/:line_number", async (req, res) => {
   const line_number = req.params.line_number;
   const data = await getLineStops(line_number);
 
-  if (data != null) {
+  if (data && line_number) {
     res.status(200).json(data);
   } else {
     res.status(500).json({ message: "Something went wrong." });
@@ -84,16 +89,27 @@ admin_routes.post("/login", (req, res) => {
 });
 
 // adds new bus line
-admin_routes.post("/bus/add", async (req, res) => {
+admin_routes.post("/bus", async (req, res) => {
   const line_number = req.body.line_number;
   const stops = req.body.stops;
   const direction = stops[stops.length - 1].name;
-
   if (line_number && stops && direction) {
     const result = await addNewLine(line_number, direction, stops);
     res.json(result);
   } else {
     return res.status(404).json({ message: "Error adding new Bus Line." });
+  }
+});
+
+// adds new bus stop
+admin_routes.post("/bus/stop", async (req, res) => {
+  const stop_name = req.body.stop_name;
+
+  if (stop_name) {
+    const result = await addNewStop(stop_name);
+    res.json({});
+  } else {
+    return res.status(404).json({ message: "Error adding new Bus Stop." });
   }
 });
 

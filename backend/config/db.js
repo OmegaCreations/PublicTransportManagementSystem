@@ -58,6 +58,7 @@ const addNewLine = async (line_number, direction, stops) => {
 
   // Iterate through all bus stops and add data to it
   for (const stop of stops) {
+    console.log(stop);
     // Insert stop data
     res = await dbQuery(`
       INSERT IGNORE INTO linia_przystanek (linia_id, przystanek_id, numer_kolejnosci) VALUES
@@ -111,6 +112,17 @@ const addNewLine = async (line_number, direction, stops) => {
   };
 };
 
+// Add new bus stop
+const addNewStop = async (stop_name) => {
+  const res = await dbQuery(`
+      INSERT IGNORE INTO przystanek (name) VALUES
+        ('${stop_name}');
+    `);
+
+  return res;
+};
+
 module.exports.getAllLines = getAllLines;
 module.exports.getLineStops = getLineStops;
 module.exports.addNewLine = addNewLine;
+module.exports.addNewStop = addNewStop;
