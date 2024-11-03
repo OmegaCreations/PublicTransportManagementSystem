@@ -38,14 +38,13 @@ const AddBusLine = {
       url: "http://localhost:5000/admin/bus",
       body: busData,
     })
-      .then(() => {
-        alert("Linia autobusowa została dodana!");
+      .then((res) => {
+        alert(res);
         AddBusLine.lineNumber = "";
         AddBusLine.stops = [];
       })
       .catch((error) => {
-        console.error("Błąd:", error);
-        alert("Wystąpił błąd przy dodawaniu linii.");
+        alert(error);
       });
   },
 

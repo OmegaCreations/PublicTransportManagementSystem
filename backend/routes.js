@@ -87,7 +87,12 @@ admin_routes.post("/login", (req, res) => {
 admin_routes.post("/bus", async (req, res) => {
   const line_number = req.body.line_number;
   const stops = req.body.stops;
-  const direction = stops[stops.length - 1].name;
+  let direction = null;
+
+  if (stops.length > 1) {
+    direction = stops[stops.length - 1].name;
+  }
+
   if (line_number && stops && direction) {
     const result = await addNewLine(line_number, direction, stops);
     res.status(result.status).json(result.message);
