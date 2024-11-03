@@ -17,24 +17,19 @@ public_routes.get("/", (req, res) => {
 
 // get all buses
 public_routes.get("/bus", async (req, res) => {
-  const data = await getAllLines();
-
-  if (data != null) {
-    res.status(200).json(data);
-  } else {
-    res.status(500).json({ message: "Something went wrong." });
-  }
+  const result = await getAllLines();
+  res.status(result.status).json(result.message);
 });
 
 // get all stops with given bus number (both directions returned)
 public_routes.get("/bus/:line_number", async (req, res) => {
   const line_number = req.params.line_number;
-  const data = await getLineStops(line_number);
 
-  if (data && line_number) {
-    res.status(200).json(data);
+  if (line_number) {
+    const result = await getLineStops(line_number);
+    res.status(result.status).json(result.message);
   } else {
-    res.status(500).json({ message: "Something went wrong." });
+    res.status(404).json({ message: "Wrong line number." });
   }
 });
 
@@ -82,7 +77,7 @@ admin_routes.post("/login", (req, res) => {
     req.session.authorization = { accessToken };
     req.session.username = username;
 
-    return res.status(200).send("User successfully logged in.");
+    return res.status(200).send({ message: "User successfully logged in." });
   } else {
     return res.status(208).json({ message: "Wrong username and password" });
   }
@@ -95,7 +90,7 @@ admin_routes.post("/bus", async (req, res) => {
   const direction = stops[stops.length - 1].name;
   if (line_number && stops && direction) {
     const result = await addNewLine(line_number, direction, stops);
-    res.json(result);
+    res.status(result.status).json(result.message);
   } else {
     return res.status(404).json({ message: "Error adding new Bus Line." });
   }
@@ -107,7 +102,7 @@ admin_routes.post("/bus/stop", async (req, res) => {
 
   if (stop_name) {
     const result = await addNewStop(stop_name);
-    res.json({});
+    res.status(result.status).json(result.message);
   } else {
     return res.status(404).json({ message: "Error adding new Bus Stop." });
   }
