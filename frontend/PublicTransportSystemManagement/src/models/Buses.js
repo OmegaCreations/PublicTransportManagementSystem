@@ -1,9 +1,32 @@
-const m = require("mithril");
+import m from "mithril";
 
 const Buses = {
   data: [],
-  loadBuses: () => {
-    // TODO : load busses from API
+  currentBus: [],
+
+  loadBuses: async () => {
+    try {
+      const data = await m.request({
+        method: "GET",
+        url: "http://localhost:5000/bus",
+      });
+      Buses.data = data;
+    } catch (err) {
+      return console.log(err);
+    }
+  },
+
+  loadBusLine: async (line_number) => {
+    try {
+      const data = await m.request({
+        method: "GET",
+        url: `http://localhost:5000/bus/${line_number}`,
+      });
+      Buses.currentBus = data;
+      console.log(Buses.data);
+    } catch (err) {
+      return console.log(err);
+    }
   },
 
   addBusLine: () => {
@@ -29,24 +52,6 @@ const Buses = {
     //     ]
     // }
   },
-
-  oninit: this.loadBuses,
-
-  view: () => {
-    return m(
-      ".buses-item",
-      data.map((bus) => [
-        m("bus-title", bus.number),
-        m("bus-data", bus.direction),
-        m(
-          "bus-stops",
-          bus.stops.map((stop) => {
-            return m("bus-stop", stop.number + " " + stop.name);
-          })
-        ),
-      ])
-    );
-  },
 };
 
-module.exports = Buses;
+export default Buses;

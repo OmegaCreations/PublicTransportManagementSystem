@@ -1,9 +1,11 @@
 const express = require("express");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const { public_routes, admin_routes } = require("./routes");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use(

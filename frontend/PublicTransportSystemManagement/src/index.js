@@ -1,11 +1,11 @@
 import m from "mithril";
-import { App } from "./App";
-import { Buses } from "./models/Buses";
+import BusesList from "./views/BusesList/BusesList";
+import BusDetails from "./views/BusDetails/BusDetails";
 
 const mountNode = document.querySelector("#app");
-m.mount(mountNode, App);
+m.mount(mountNode, BusesList);
 
 m.route(mountNode, "/", {
-  "/": App,
-  "/buses": Buses,
+  "/": BusesList,
+  "/bus/:id": BusDetails,
 });

@@ -1,0 +1,28 @@
+.buses-items {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+
+  padding: 150px 0;
+}
+
+.bus-data {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  color: #f7f7f7;
+  padding: 15px 25px;
+
+  align-items: center;
+  gap: 15px;
+}
+
+.bus-data:hover {
+  cursor: pointer;
+}
+
+.bus-title {
+  font-size: 1.5em;
+}
